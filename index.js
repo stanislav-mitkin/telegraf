@@ -263,19 +263,17 @@ const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
 const restaurantsList = Markup.keyboard(
-  RESTS.map((rest) => Markup.button.callback("/rest", rest.id))
+  RESTS.map((rest) => Markup.button.callback(rest.name, rest.id))
 );
 
 bot.start((ctx) => {
   ctx.reply(
     "Добро пожаловать в бота для получения скидки по красной карте Евразия"
   );
-
-  ctx.reply("Выберите ресторан:", restaurantsList);
 });
 
-bot.command("weather", async (ctx) => {
-  ctx.reply(JSON.stringify(ctx));
+bot.command("menu", async (ctx) => {
+  ctx.reply("Выберите ресторан", restaurantsList);
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
