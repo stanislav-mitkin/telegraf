@@ -272,7 +272,8 @@ bot.start(async (ctx) => {
   await ctx.reply(
     "Добро пожаловать в бота для получения скидки по красной карте Евразия"
   );
-  await ctx.reply("Выберите ресторан", restaurantsList);
+  await ctx.reply("Выберите ресторан");
+  await ctx.reply(restaurantsList);
 });
 
 bot.action(/restaurant (\d+)/, (ctx) => {
