@@ -264,7 +264,7 @@ app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
 const restaurantsList = Markup.keyboard(
   RESTS.map((rest) =>
-    Markup.button.callback(rest.name, `/rest ${Number(rest.id)}`)
+    Markup.button.callback(rest.name, `restaurant ${Number(rest.id)}`)
   )
 );
 
@@ -274,12 +274,12 @@ bot.start((ctx) => {
   );
 });
 
-bot.command("menu", async (ctx) => {
-  ctx.reply("Выберите ресторан", restaurantsList);
+bot.command("menu", async (ctx, next) => {
+  ctx.reply("Выберите ресторан", restaurantsList).then(() => next());
 });
 
-bot.hears(/\/rest (\d+)/, (ctx) => {
-  return ctx.reply(ctx.match[1]);
+bot.hears(/restaurant (\d+)/, (ctx, next) => {
+  return ctx.reply(ctx.match[1]).then(() => next());
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
