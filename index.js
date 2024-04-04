@@ -262,7 +262,7 @@ const RESTS = [
 const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
-const restaurantsList = Markup.inlineKeyboard(
+const restaurantsList = Markup.keyboard(
   RESTS.map((rest) =>
     Markup.button.callback(rest.name, `restaurant ${Number(rest.id)}`)
   )
@@ -279,6 +279,8 @@ bot.command("menu", async (ctx) => {
 });
 
 bot.inlineQuery(/restaurant (\d+)/, (ctx) => {
+  Markup.keyboard.removeKeyboard();
+
   return ctx.reply(ctx.match[1]);
 });
 
