@@ -268,11 +268,11 @@ const restaurantsList = Markup.keyboard(
   )
 );
 
-bot.start((ctx) => {
-  ctx.reply(
+bot.start(async (ctx) => {
+  await ctx.reply(
     "Добро пожаловать в бота для получения скидки по красной карте Евразия"
   );
-  ctx.reply("Выберите ресторан", restaurantsList);
+  await ctx.reply("Выберите ресторан", restaurantsList);
 });
 
 bot.action(/restaurant (\d+)/, (ctx) => {
