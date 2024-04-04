@@ -1,4 +1,12 @@
 {
+  "name": "eurasiacard_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "telegraf": "^4.16.3"
   }
