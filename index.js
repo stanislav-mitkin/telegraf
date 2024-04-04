@@ -278,7 +278,7 @@ bot.command("menu", async (ctx, next) => {
   ctx.reply("Выберите ресторан", restaurantsList).then(() => next());
 });
 
-bot.hears(/restaurant (\d+)/, (ctx, next) => {
+bot.action(/restaurant (\d+)/, (ctx, next) => {
   return ctx.reply(ctx.match[1]).then(() => next());
 });
 
