@@ -268,16 +268,18 @@ const restaurantsList = Markup.keyboard(
   )
 );
 
-bot.start(async (ctx) => {
-  await ctx.reply(
+bot.start((ctx) => {
+  ctx.reply(
     "Добро пожаловать в бота для получения скидки по красной карте Евразия"
   );
-  await ctx.reply("Выберите ресторан");
-  await ctx.reply(restaurantsList);
 });
 
 bot.action(/restaurant (\d+)/, (ctx) => {
-  return ctx.reply(ctx.match[1]);
+  ctx.reply(ctx.match[1]);
+});
+
+bot.command("menu", async (ctx) => {
+  ctx.reply("Выберите ресторан", restaurantsList);
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
