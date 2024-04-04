@@ -262,7 +262,7 @@ const RESTS = [
 const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
-const restaurantsList = Markup.keyboard(
+const restaurantsList = Markup.inlineKeyboard(
   RESTS.map((rest) =>
     Markup.button.callback(rest.name, `restaurant ${Number(rest.id)}`)
   )
