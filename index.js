@@ -276,7 +276,7 @@ bot.command("menu", async (ctx) => {
   ctx.reply("Выберите ресторан", restaurantsList);
 });
 
-bot.command(/rest (.*)/, (ctx) => {
+bot.hears(/rest (.*)/, (ctx) => {
   console.log(ctx.match);
   ctx.reply('Вы выбрали ресторан', ctx.match[1]);
 });
