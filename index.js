@@ -317,11 +317,17 @@ bot.on(message("text"), async (ctx) => {
   const resto = RESTS.find((rest) => rest.name.includes(text));
 
   if (resto) {
-    const result = await requestCode();
-    if (!!result) {
-      ctx.replyWithHTML(
-        `Код для ресторана <i>${resto.name}<i>: <b>${result}<b>`
-      );
+    try {
+      const result = await requestCode();
+      if (!!result) {
+        ctx.replyWithHTML(
+          `Код для ресторана <i>${resto.name}<i>: <b>${result}<b>`
+        );
+      } else {
+        ctx.replyWithHTML(`<b>Не<b> удалось получить код`);
+      }
+    } catch (err) {
+      ctx.replyWithHTML(`<b>Не<b> удалось получить код`);
     }
   }
 });
