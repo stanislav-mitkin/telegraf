@@ -312,7 +312,7 @@ bot.start((ctx) => {
 });
 
 bot.command("menu", async (ctx) => {
-  ctx.reply('Выберите ресторан', restaurantsList);
+  ctx.reply("Выберите ресторан", restaurantsList);
 });
 
 bot.on(message("text"), async (ctx) => {
@@ -327,7 +327,12 @@ bot.on(message("text"), async (ctx) => {
       const result = await requestCode(resto.id);
       if (!!result) {
         ctx.replyWithHTML(
-          `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`
+          `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`,
+          {
+            reply_markup: {
+              remove_keyboard: true,
+            },
+          }
         );
       } else {
         ctx.replyWithHTML(`<b>Не</b> удалось получить код`);
