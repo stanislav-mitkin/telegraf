@@ -1,5 +1,6 @@
 import { fastify } from "fastify";
 import { Telegraf, Markup } from "telegraf";
+import { message } from "telegraf/filters";
 
 const TOKEN = "6748836434:AAGMcz5CB8ACnpUpTnJenvBPvkQ1g14hwvE";
 const DOMAIN = "telegrafbot.vercel.app";
@@ -263,7 +264,7 @@ const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
 const restaurantsList = Markup.keyboard(
-  RESTS.map((rest) => Markup.button.callback(rest.name, `/rest ${rest.id}`))
+  RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
 );
 
 bot.start((ctx) => {
@@ -276,9 +277,14 @@ bot.command("menu", async (ctx) => {
   ctx.reply("Выберите ресторан", restaurantsList);
 });
 
-bot.hears(/rest (.*)/, (ctx) => {
-  console.log(ctx.match);
-  ctx.reply('Вы выбрали ресторан', ctx.match[1]);
+bot.on(message("text"), async (ctx) => {
+  const text = ctx.message.text;
+
+  const resto = RESTS.find((rest) => rest.name.includes(text));
+
+  if (resto) {
+    ctx.reply(`${resto.name} ${resto.id}`);
+  }
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
