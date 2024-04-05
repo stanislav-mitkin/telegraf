@@ -289,7 +289,7 @@ const RESTS = [
   },
 ];
 
-const TOKEN = "6748836434:AAGMcz5CB8ACnpUpTnJenvBPvkQ1g14hwvE";
+const TOKEN = process.env.TOKEN || '';
 const DOMAIN = "telegrafbot.vercel.app";
 const PORT = 8080;
 

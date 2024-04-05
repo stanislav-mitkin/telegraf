@@ -11,5 +11,8 @@
     "fastify": "^4.26.2",
     "telegraf": "^4.16.3",
     "typescript": "^5.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.4"
   }
 }
