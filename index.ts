@@ -2,14 +2,7 @@ import { fastify } from "fastify";
 import { Telegraf, Markup } from "telegraf";
 import { message } from "telegraf/filters";
 
-const TOKEN = "6748836434:AAGMcz5CB8ACnpUpTnJenvBPvkQ1g14hwvE";
-const DOMAIN = "telegrafbot.vercel.app";
-const PORT = 8080;
-
-const bot = new Telegraf(TOKEN);
-const app = fastify();
-
-async function requestCode(restId) {
+async function requestCode(restId: number) {
   // const res = await fetch(
   //   `https://evrasia.spb.ru/api/v1/restaurant-discount/?REST_ID=${restId}`,
   //   {
@@ -296,53 +289,64 @@ const RESTS = [
   },
 ];
 
-const webhook = await bot.createWebhook({ domain: DOMAIN });
-app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
+const TOKEN = "6748836434:AAGMcz5CB8ACnpUpTnJenvBPvkQ1g14hwvE";
+const DOMAIN = "telegrafbot.vercel.app";
+const PORT = 8080;
 
-const restaurantsList = Markup.keyboard(
-  RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
-);
+async function startBot() {
+  const bot = new Telegraf(TOKEN);
+  const app = fastify();
 
-bot.start((ctx) => {
-  ctx.replyWithHTML(
-    `Добро пожаловать в бота для получения скидки по красной карте Евразия
+  const webhook = await bot.createWebhook({ domain: DOMAIN });
+  app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
+
+  const restaurantsList = Markup.keyboard(
+    RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
+  );
+
+  bot.start((ctx) => {
+    ctx.replyWithHTML(
+      `Добро пожаловать в бота для получения скидки по красной карте Евразия
 Напишите <b>/menu</b> для получения списка ресторанов
     `
-  );
-});
+    );
+  });
 
-bot.command("menu", async (ctx) => {
-  ctx.reply("Выберите ресторан", restaurantsList);
-});
+  bot.command("menu", async (ctx) => {
+    ctx.reply("Выберите ресторан", restaurantsList);
+  });
 
-bot.on(message("text"), async (ctx) => {
-  Markup.removeKeyboard();
+  bot.on(message("text"), async (ctx) => {
+    Markup.removeKeyboard();
 
-  const text = ctx.message.text;
+    const text = ctx.message.text;
 
-  const resto = RESTS.find((rest) => rest.name.includes(text));
+    const resto = RESTS.find((rest) => rest.name.includes(text));
 
-  if (resto) {
-    try {
-      const result = await requestCode(resto.id);
-      if (!!result) {
-        ctx.replyWithHTML(
-          `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`,
-          {
-            reply_markup: {
-              remove_keyboard: true,
-            },
-          }
-        );
-      } else {
+    if (resto) {
+      try {
+        const result = await requestCode(resto.id);
+        if (!!result) {
+          ctx.replyWithHTML(
+            `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`,
+            {
+              reply_markup: {
+                remove_keyboard: true,
+              },
+            }
+          );
+        } else {
+          ctx.replyWithHTML(`<b>Не</b> удалось получить код`);
+        }
+      } catch (err) {
         ctx.replyWithHTML(`<b>Не</b> удалось получить код`);
       }
-    } catch (err) {
-      ctx.replyWithHTML(`<b>Не</b> удалось получить код`);
+    } else {
+      ctx.replyWithHTML(`<b>Не</b> удалось найти ресторан с таким названием`);
     }
-  } else {
-    ctx.replyWithHTML(`<b>Не</b> удалось найти ресторан с таким названием`);
-  }
-});
+  });
 
-app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
+  app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
+}
+
+startBot();
