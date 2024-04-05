@@ -11,7 +11,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "fastify": "^4.26.2",
     "telegraf": "^4.16.3",
     "typescript": "^5.4.4"
   },

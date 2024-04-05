@@ -1,4 +1,3 @@
-import { fastify } from "fastify";
 import { Telegraf, Markup } from "telegraf";
 import { message } from "telegraf/filters";
 
