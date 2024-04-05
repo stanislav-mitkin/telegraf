@@ -277,8 +277,8 @@ bot.command("menu", async (ctx) => {
 });
 
 bot.command(/rest (.*)/, (ctx) => {
-  console.log(ctx.match)
-  ctx.reply(ctx.match);
-})
+  console.log(ctx.match);
+  ctx.reply(ctx.match[1]);
+});
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
