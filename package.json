@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && node index.js"
+    "start": "tsc && node index.js",
+    "build": "rimraf index.js && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "fastify": "^4.26.2",
@@ -13,6 +16,13 @@
     "typescript": "^5.4.4"
   },
   "devDependencies": {
-    "@types/node": "^20.12.4"
-  }
+    "@types/node": "^20.12.4",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5"
+  },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ]
 }

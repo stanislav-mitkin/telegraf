@@ -289,16 +289,12 @@ const RESTS = [
   },
 ];
 
-const TOKEN = process.env.TOKEN || '';
+const TOKEN = process.env.TOKEN || "";
 const DOMAIN = "telegrafbot.vercel.app";
 const PORT = 8080;
 
 async function startBot() {
   const bot = new Telegraf(TOKEN);
-  const app = fastify();
-
-  const webhook = await bot.createWebhook({ domain: DOMAIN });
-  app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
   const restaurantsList = Markup.keyboard(
     RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
@@ -346,7 +342,9 @@ async function startBot() {
     }
   });
 
-  app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
+  bot
+    .launch({ webhook: { domain: DOMAIN, port: PORT } })
+    .then(() => console.log("Webhook bot listening on port", PORT));
 }
 
 startBot();
