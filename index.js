@@ -300,12 +300,14 @@ const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
 const restaurantsList = Markup.keyboard(
-  RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
+  RESTS.map((rest) => Markup.button.callback(rest.name, rest.name, true))
 );
 
 bot.start((ctx) => {
-  ctx.reply(
-    "Добро пожаловать в бота для получения скидки по красной карте Евразия"
+  ctx.replyWithHTML(
+    `Добро пожаловать в бота для получения скидки по красной карте Евразия
+     Напишите <b>/menu</b> для получения списка ресторанов
+    `
   );
 });
 
@@ -314,6 +316,8 @@ bot.command("menu", async (ctx) => {
 });
 
 bot.on(message("text"), async (ctx) => {
+  Markup.removeKeyboard();
+
   const text = ctx.message.text;
 
   const resto = RESTS.find((rest) => rest.name.includes(text));
@@ -334,8 +338,6 @@ bot.on(message("text"), async (ctx) => {
   } else {
     ctx.replyWithHTML(`<b>Не</b> удалось найти ресторан с таким названием`);
   }
-
-  Markup.removeKeyboard();
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
