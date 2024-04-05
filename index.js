@@ -10,37 +10,39 @@ const bot = new Telegraf(TOKEN);
 const app = fastify();
 
 async function requestCode(restId) {
-  const res = await fetch(
-    `https://evrasia.spb.ru/api/v1/restaurant-discount/?REST_ID=${restId}`,
-    {
-      headers: {
-        accept: "application/json, text/javascript, */*; q=0.01",
-        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
-        "sec-ch-ua":
-          '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "x-requested-with": "XMLHttpRequest",
-        cookie:
-          "PHPSESSID=6251b5b3cf62d56e1ab39a6142b6083e; CHOOSED_RESTAURANT_EVERYTIME=true; BITRIX_SM_UIDH=4062a2ab853e523e28cf6b64a0c70be9; BITRIX_SM_UIDL=%2B7+%28995%29+661-78-79; BITRIX_SM_SALE_UID=209445630; BITRIX_SM_LOGIN=%2B7+%28995%29+661-78-79; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; BITRIX_CONVERSION_CONTEXT_s1=%7B%22ID%22%3A11%2C%22EXPIRE%22%3A1712350740%2C%22UNIQUE%22%3A%5B%22conversion_visit_day%22%5D%7D; cf_clearance=OdOC4zkWeo709yAsD1EcSWrx_9K2a4Lw2Aq2qHaMADc-1712327462-1.0.1.1-B6nSj2jjY60sjdU9MP_kEOo4l6UVXsRaNxGqnbk.Hn2JKBqJk.JEtett.Vs85hw8B4qPpya7xsVREeFMo1uhhA",
-        Referer: "https://evrasia.spb.ru/account/",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-      },
-      body: null,
-      method: "GET",
-    }
-  );
+  // const res = await fetch(
+  //   `https://evrasia.spb.ru/api/v1/restaurant-discount/?REST_ID=${restId}`,
+  //   {
+  //     headers: {
+  //       accept: "application/json, text/javascript, */*; q=0.01",
+  //       "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+  //       "sec-ch-ua":
+  //         '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
+  //       "sec-ch-ua-mobile": "?0",
+  //       "sec-ch-ua-platform": '"macOS"',
+  //       "sec-fetch-dest": "empty",
+  //       "sec-fetch-mode": "cors",
+  //       "sec-fetch-site": "same-origin",
+  //       "x-requested-with": "XMLHttpRequest",
+  //       cookie:
+  //         "PHPSESSID=6251b5b3cf62d56e1ab39a6142b6083e; CHOOSED_RESTAURANT_EVERYTIME=true; BITRIX_SM_UIDH=4062a2ab853e523e28cf6b64a0c70be9; BITRIX_SM_UIDL=%2B7+%28995%29+661-78-79; BITRIX_SM_SALE_UID=209445630; BITRIX_SM_LOGIN=%2B7+%28995%29+661-78-79; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; BITRIX_CONVERSION_CONTEXT_s1=%7B%22ID%22%3A11%2C%22EXPIRE%22%3A1712350740%2C%22UNIQUE%22%3A%5B%22conversion_visit_day%22%5D%7D; cf_clearance=OdOC4zkWeo709yAsD1EcSWrx_9K2a4Lw2Aq2qHaMADc-1712327462-1.0.1.1-B6nSj2jjY60sjdU9MP_kEOo4l6UVXsRaNxGqnbk.Hn2JKBqJk.JEtett.Vs85hw8B4qPpya7xsVREeFMo1uhhA",
+  //       Referer: "https://evrasia.spb.ru/account/",
+  //       "Referrer-Policy": "strict-origin-when-cross-origin",
+  //     },
+  //     body: null,
+  //     method: "GET",
+  //   }
+  // );
 
-  const r = await res.json();
+  // const r = await res.json();
 
-  if (r.checkin) {
-    return r.checkin;
-  } else {
-    return "";
-  }
+  // if (r.checkin) {
+  //   return r.checkin;
+  // } else {
+  //   return "";
+  // }
+
+  return "1111";
 }
 
 const RESTS = [
@@ -332,6 +334,8 @@ bot.on(message("text"), async (ctx) => {
   } else {
     ctx.replyWithHTML(`<b>Не</b> удалось найти ресторан с таким названием`);
   }
+
+  Markup.removeKeyboard();
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
