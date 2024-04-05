@@ -318,7 +318,7 @@ bot.on(message("text"), async (ctx) => {
 
   if (resto) {
     try {
-      const result = await requestCode();
+      const result = await requestCode(resto);
       if (!!result) {
         ctx.replyWithHTML(
           `Код для ресторана <i>${resto.name}<i>: <b>${result}<b>`
