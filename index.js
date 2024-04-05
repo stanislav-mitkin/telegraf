@@ -263,7 +263,7 @@ const webhook = await bot.createWebhook({ domain: DOMAIN });
 app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
 const restaurantsList = Markup.keyboard(
-  RESTS.map((rest) => Markup.button.callback(rest.name, `rr`))
+  RESTS.map((rest) => Markup.button.callback(rest.name, `/r${rest.id}`))
 );
 
 bot.start((ctx) => {
@@ -276,7 +276,7 @@ bot.command("menu", async (ctx) => {
   ctx.reply("Выберите ресторан", restaurantsList);
 });
 
-bot.action(/rr/i, (ctx) => {
+bot.action(/r(d+)/i, (ctx) => {
   ctx.reply("ресторан");
 });
 
