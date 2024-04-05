@@ -276,8 +276,8 @@ bot.command("menu", async (ctx) => {
   ctx.reply("Выберите ресторан", restaurantsList);
 });
 
-bot.action(/r(d+)/i, (ctx) => {
-  ctx.reply("ресторан");
+bot.action(/.+/, (ctx) => {
+  return ctx.answerCbQuery(`Oh, ${ctx.match[0]}! Great choice`);
 });
 
 app.listen({ port: PORT }).then(() => console.log("Listening on port", PORT));
