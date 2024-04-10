@@ -1,5 +1,7 @@
-import { Telegraf, Markup } from "telegraf";
+import { Context, Telegraf, Markup, session } from "telegraf";
 import { message } from "telegraf/filters";
+
+const REQUEST_TIMEOUT = 60 * 1000; // 60 seconds;
 
 async function requestCode(restId: number) {
   const res = await fetch(
@@ -290,8 +292,15 @@ const TOKEN = process.env.TOKEN || "";
 const DOMAIN = "telegrafbot.vercel.app";
 const PORT = 8080;
 
+interface BotContext extends Context {
+  session?: {
+    lastRequestTime: Date;
+  };
+}
 async function startBot() {
-  const bot = new Telegraf(TOKEN);
+  const bot = new Telegraf<BotContext>(TOKEN);
+
+  bot.use(session());
 
   const restaurantsList = Markup.keyboard(
     RESTS.map((rest) => Markup.button.callback(rest.name, rest.name))
@@ -309,16 +318,42 @@ async function startBot() {
     ctx.reply("Выберите ресторан", restaurantsList);
   });
 
-  bot.on(message("text"), async (ctx) => {
-    Markup.removeKeyboard();
+  bot.command("help", async (ctx) => {
+    ctx.replyWithHTML(`
+<b>Инструкция при нахождении в заведении:</b>
+1️⃣ Выберите нужный ресторан с помощью команды /menu
+2️⃣ Дождитесь получения кода от бота
+3️⃣ Скажите официанту что у вас Красная карта
+4️⃣ Назовите ему код из бота (4 цифры)
+5️⃣ Профит! Красные цены теперь ваши.
 
+По красной бонусной карте вы получаете скидку на меню (красные цены) и возможность получать выгодные предложения
+💲Плюсы карты - получаете СКИДКУ 30% на все блюда в меню и даже на алкоголь 🍾
+1️⃣➕1️⃣ Действует 1+1 в счастливые часы и красные ценники.
+`);
+  });
+
+  bot.on(message("text"), async (ctx) => {
     const text = ctx.message.text;
+
+    if (
+      ctx.session?.lastRequestTime &&
+      new Date().getTime() - ctx.session.lastRequestTime?.getTime() <
+        REQUEST_TIMEOUT
+    ) {
+      ctx.replyWithHTML(
+        `Слишком частые запросы, код можно запрашивать не чаще чем раз в <b>1 минуту</b>`
+      );
+      return;
+    }
 
     const resto = RESTS.find((rest) => rest.name.includes(text));
 
     if (resto) {
       try {
         const result = await requestCode(resto.id);
+        ctx.session ??= { lastRequestTime: new Date() };
+
         if (!!result) {
           ctx.replyWithHTML(
             `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`,
