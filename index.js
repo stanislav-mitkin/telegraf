@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const telegraf_1 = require("telegraf");
 const filters_1 = require("telegraf/filters");
-const REQUEST_TIMEOUT = 60 * 1000; // 60 seconds;
+const REQUEST_TIMEOUT = 30 * 1000; // 30 seconds;
 async function requestCode(restId) {
     const res = await fetch(`https://evrasia.spb.ru/api/v1/restaurant-discount/?REST_ID=${restId}`, {
         headers: {
@@ -316,7 +316,7 @@ async function startBot() {
         if (ctx.session?.lastRequestTime &&
             new Date().getTime() - ctx.session.lastRequestTime?.getTime() <
                 REQUEST_TIMEOUT) {
-            ctx.replyWithHTML(`Слишком частые запросы, код можно запрашивать не чаще чем раз в <b>1 минуту</b>`);
+            ctx.replyWithHTML(`Слишком частые запросы, код можно запрашивать не чаще чем раз в <b>30 секунд</b>`);
             return;
         }
         const resto = RESTS.find((rest) => rest.name.includes(text));

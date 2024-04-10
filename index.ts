@@ -1,7 +1,7 @@
 import { Context, Telegraf, Markup, session } from "telegraf";
 import { message } from "telegraf/filters";
 
-const REQUEST_TIMEOUT = 60 * 1000; // 60 seconds;
+const REQUEST_TIMEOUT = 30 * 1000; // 30 seconds;
 
 async function requestCode(restId: number) {
   const res = await fetch(
@@ -344,7 +344,7 @@ async function startBot() {
         REQUEST_TIMEOUT
     ) {
       ctx.replyWithHTML(
-        `Слишком частые запросы, код можно запрашивать не чаще чем раз в <b>1 минуту</b>`
+        `Слишком частые запросы, код можно запрашивать не чаще чем раз в <b>30 секунд</b>`
       );
       return;
     }
