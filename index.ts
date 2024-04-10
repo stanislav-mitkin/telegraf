@@ -19,8 +19,8 @@ async function requestCode(restId: number) {
         "sec-fetch-site": "same-origin",
         "x-requested-with": "XMLHttpRequest",
         cookie:
-          "CHOOSED_RESTAURANT_EVERYTIME=true; BITRIX_SM_LOGIN=%2B7+%28995%29+661-78-79; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; PHPSESSID=20d76ec97701750131052d60a6c35193; BITRIX_SM_UIDH=cd2e45944d5ae042211668ac50b09484; BITRIX_SM_UIDL=%2B7+%28995%29+661-78-79; BITRIX_SM_SALE_UID=209445630; BITRIX_CONVERSION_CONTEXT_s1=%7B%22ID%22%3A11%2C%22EXPIRE%22%3A1712437140%2C%22UNIQUE%22%3A%5B%22conversion_visit_day%22%5D%7D; cf_clearance=4.Q_Id11KkCUd43.mjWfRviC79RJ2GBPWmwtkpggJnw-1712391595-1.0.1.1-u6rkP4aRzzCqKTtmcH6a4l2AeCJ9TfzCqOOaGW_qDwxbC7lKHLQS06EyWJZIAJ01Hs9QKi1jeDbfuYY566Pxsg",
-        Referer: "https://evrasia.spb.ru/account/",
+          "CHOOSED_RESTAURANT_EVERYTIME=true; BITRIX_SM_LOGIN=%2B7+%28995%29+661-78-79; BITRIX_SM_SOUND_LOGIN_PLAYED=Y; BITRIX_CONVERSION_CONTEXT_s1=%7B%22ID%22%3A11%2C%22EXPIRE%22%3A1712782740%2C%22UNIQUE%22%3A%5B%22conversion_visit_day%22%5D%7D; PHPSESSID=3a2cf8f6363c87db3bba391c294861ec; BITRIX_SM_UIDH=34ed1f5d7fd3df7c18f97d9f48f4541a; BITRIX_SM_UIDL=%2B7+%28995%29+661-78-79; BITRIX_SM_SALE_UID=209445630; cf_clearance=pOWODgk16.g.vC_J8Qa2crhSw4Izhxpb5t9T1l_75AY-1712772321-1.0.1.1-O_3H5TtjC__iFuj_jp5wLabr5k1WVf9c7Zd4gwvOX21v6i8iSVSl.8XxaC4.S1drx8Ec68tCFhbNOv9eDKWgdw",
+        Referer: "https://evrasia.spb.ru/account/?REST_ID=228&submit=",
         "Referrer-Policy": "strict-origin-when-cross-origin",
       },
       body: null,
@@ -354,9 +354,9 @@ async function startBot() {
     if (resto) {
       try {
         const result = await requestCode(resto.id);
-        ctx.session ??= { lastRequestTime: new Date() };
 
         if (!!result) {
+          ctx.session ??= { lastRequestTime: new Date() };
           ctx.replyWithHTML(
             `Код для ресторана <i>${resto.name}</i>: <b>${result}</b>`,
             {
