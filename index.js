@@ -279,6 +279,10 @@ const RESTS = [
         id: 1663583,
         name: "Мурино, Екатерининская ул. 17",
     },
+    {
+        id: 1709622,
+        name: "Ростовская ул., 20, территория Славянка, КДЦ Green Park",
+    },
 ];
 const TOKEN = process.env.TOKEN || "";
 const DOMAIN = "telegrafbot.vercel.app";
